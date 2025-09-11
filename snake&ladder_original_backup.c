@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-int main ()
+void main ()
 {
  int gd = DETECT,gm,i,j,a,h,c,d=0,e=9,z=0,y=0,g,p=9,m=0,n=0,o,b=0,l;
  char r,w;
@@ -53,11 +53,6 @@ int main ()
  delay (500);
  }
  scanf ("%d",&i);
- // Input validation for menu choice
- if (i < 1 || i > 3) {
-  printf("Invalid choice! Please enter 1, 2, or 3.\n");
-  goto ajit;
- }
  if (i==1)
  {
   cleardevice ();
@@ -633,7 +628,7 @@ int main ()
 		bar (448,0,512,42);
 		rectangle (448,0,512,42);
 		delay (10);
-		outtextxy (468,10,"93");
+		outtextxy (468,522,"93");
 		 setfillstyle (SOLID_FILL,1);
       bar (50+64*(d),42*e,64+64*(d),42*e+10);
       rectangle (50+64*(d),42*e,64+64*(d),42*e+10);
@@ -1025,11 +1020,11 @@ int main ()
       bar (50+64*n,42*p+10,64+64*n,42*p+20);
       rectangle (50+64*n,42*p+10,64+64*n,42*p+20);
 		setfillstyle (SOLID_FILL,14);
-		bar (370,52,384,62);
+		bar (370,452,384,62);
 		rectangle (370,52,384,62);
 		delay (1500);
 		setfillstyle (SOLID_FILL,1);
-		bar (370,52,384,62);
+		bar (370,452,384,62);
 		rectangle (370,52,384,62);
 		break;
       case 49 :
@@ -1144,6 +1139,5 @@ if (i==3)
  getch ();
  closegraph ();
  restorecrtmode ();
- return 0;
 }
 
