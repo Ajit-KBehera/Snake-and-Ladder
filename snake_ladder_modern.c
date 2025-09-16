@@ -14,20 +14,20 @@
 #define BOARD_HEIGHT 420
 
 // Color definitions (RGB)
-#define COLOR_BLACK {0, 0, 0}
-#define COLOR_WHITE {255, 255, 255}
-#define COLOR_BLUE {0, 0, 255}
-#define COLOR_RED {255, 0, 0}
-#define COLOR_GREEN {0, 255, 0}
-#define COLOR_YELLOW {255, 255, 0}
-#define COLOR_CYAN {0, 255, 255}
-#define COLOR_MAGENTA {255, 0, 255}
-#define COLOR_ORANGE {255, 165, 0}
-#define COLOR_PINK {255, 192, 203}
-#define COLOR_GRAY {128, 128, 128}
-#define COLOR_DARK_GRAY {64, 64, 64}
-#define COLOR_LIGHT_BLUE {173, 216, 230}
-#define COLOR_BROWN {139, 69, 19}
+#define COLOR_BLACK (SDL_Color){0, 0, 0, 255}
+#define COLOR_WHITE (SDL_Color){255, 255, 255, 255}
+#define COLOR_BLUE (SDL_Color){0, 0, 255, 255}
+#define COLOR_RED (SDL_Color){255, 0, 0, 255}
+#define COLOR_GREEN (SDL_Color){0, 255, 0, 255}
+#define COLOR_YELLOW (SDL_Color){255, 255, 0, 255}
+#define COLOR_CYAN (SDL_Color){0, 255, 255, 255}
+#define COLOR_MAGENTA (SDL_Color){255, 0, 255, 255}
+#define COLOR_ORANGE (SDL_Color){255, 165, 0, 255}
+#define COLOR_PINK (SDL_Color){255, 192, 203, 255}
+#define COLOR_GRAY (SDL_Color){128, 128, 128, 255}
+#define COLOR_DARK_GRAY (SDL_Color){64, 64, 64, 255}
+#define COLOR_LIGHT_BLUE (SDL_Color){173, 216, 230, 255}
+#define COLOR_BROWN (SDL_Color){139, 69, 19, 255}
 
 // Global variables
 SDL_Window* window = NULL;
@@ -185,9 +185,18 @@ void draw_line(int x1, int y1, int x2, int y2, SDL_Color color) {
     SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
 }
 
-// Delay function
+// Delay function with event processing
 void delay_ms(int milliseconds) {
-    SDL_Delay(milliseconds);
+    Uint32 start = SDL_GetTicks();
+    while (SDL_GetTicks() - start < milliseconds) {
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                exit(0);
+            }
+        }
+        SDL_Delay(10);
+    }
 }
 
 // Play sound (placeholder - would need SDL_mixer for actual sound)
@@ -207,7 +216,7 @@ void draw_board() {
     clear_screen();
     
     // Draw board outline
-    draw_rectangle(20, 0, BOARD_WIDTH, BOARD_HEIGHT);
+    draw_rectangle(20, 0, BOARD_WIDTH, BOARD_HEIGHT, white);
     
     // Draw grid lines
     for (int i = 1; i <= 9; i++) {
@@ -402,6 +411,14 @@ void play_game() {
     draw_board();
     
     while (1) {
+        // Process SDL events
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                return;
+            }
+        }
+        
         // Player A's turn
         printf("Player A's turn. Enter dice roll (1-6): ");
         scanf("%d", &dice_roll);
@@ -523,6 +540,15 @@ int main() {
     
     // Main menu loop
     while (1) {
+        // Process SDL events
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                cleanup_graphics();
+                return 0;
+            }
+        }
+        
         show_menu();
         
         printf("Enter your choice (1-3): ");

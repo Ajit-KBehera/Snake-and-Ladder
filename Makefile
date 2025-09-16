@@ -1,13 +1,14 @@
 # Makefile for Snake & Ladder Game (Modernized Version)
 
-# Compiler
-CC = gcc
+# Compiler - Use Homebrew GCC for macOS
+CC = /opt/homebrew/bin/gcc-15
 
 # Compiler flags
 CFLAGS = -Wall -Wextra -std=c99
 
-# Libraries
-LIBS = -lSDL2 -lSDL2_ttf
+# Libraries - Use pkg-config for proper paths
+LIBS = $(shell pkg-config --libs sdl2 SDL2_ttf)
+CFLAGS += $(shell pkg-config --cflags sdl2 SDL2_ttf)
 
 # Source files
 SRC = snake_ladder_modern.c
